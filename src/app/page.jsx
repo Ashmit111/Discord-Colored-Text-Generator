@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -45,6 +45,13 @@ export default function DiscordColoredTextGenerator() {
   const textareaRef = useRef(null);
   const [copyStatus, setCopyStatus] = useState('');
   const [copyCount, setCopyCount] = useState(0);
+
+  // Set initial content only once
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.innerHTML = `Welcome to <span class="ansi-33">Ashmit</span>'s <span class="ansi-45"><span class="ansi-37">Discord</span></span> <span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span> Text Generator!`;
+    }
+  }, []);
 
   // Apply text formatting
   const applyFormatting = (formatCode) => {
@@ -175,22 +182,23 @@ export default function DiscordColoredTextGenerator() {
     <Container size="md" py="xl">
       <Stack spacing="lg">
         <Title order={1} align="center">
-        Ashmit's Discord <span style={{ color: '#5865F2' }}>Colored</span> Text Generator
+          Ashmit's Discord <span style={{ color: '#5865F2' }}>Colored</span> Text Generator
         </Title>
 
         <Title order={3} align="center">About</Title>
 
         <Text align="center">
-        This is a simple app that creates colored Discord messages using the <br/> ANSI color codes available on the latest Discord desktop versions.
+          This is a simple app that creates colored Discord messages using the <br/> ANSI color codes available on the latest Discord desktop versions.
         </Text>
 
         <Text align="center">
-        To use this, write your text, select parts of it and assign colors to them, <br/> then copy it using the button below, and send in a Discord message.
+          To use this, write your text, select parts of it and assign colors to them, <br/> then copy it using the button below, and send in a Discord message.
         </Text>
 
         <Title order={3} align="center">Source Code</Title>
 
-        <Text align="center">This app runs entirely in your browser and the source code is freely <br/> available on <Anchor href='https://gist.github.com/rebane2001/07f2d8e80df053c70a1576d27eabe97c'>GitHub</Anchor>. Shout out to kkrypt0nn for <Anchor href='https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06'>this guide</Anchor>.
+        <Text align="center">
+          This app runs entirely in your browser and the source code is freely <br/> available on <Anchor href='https://gist.github.com/rebane2001/07f2d8e80df053c70a1576d27eabe97c'>GitHub</Anchor>. Shout out to kkrypt0nn for <Anchor href='https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06'>this guide</Anchor>.
         </Text>
 
         <Title order={3} align="center">Create your text</Title>
@@ -208,98 +216,95 @@ export default function DiscordColoredTextGenerator() {
         </Flex>
 
         <Flex justify='center'>
-        <Box>
-          <Text weight={500} mb="xs">FG Colors</Text>
-          <Flex gap={6} mb="md">
-            {[30, 31, 32, 33, 34, 35, 36, 37].map((code) => (
-              <Tooltip key={code} label={colorDescriptions[code.toString()]}>
-                <ActionIcon
-                  className={`ansi-${code}-bg`}
-                  size="lg"
-                  onClick={() => applyFormatting(code)}
-                >
-                  &nbsp;
-                </ActionIcon>
-              </Tooltip>
-            ))}
-          </Flex>
+          <Box>
+            <Text weight={500} mb="xs">FG Colors</Text>
+            <Flex gap={6} mb="md">
+              {[30, 31, 32, 33, 34, 35, 36, 37].map((code) => (
+                <Tooltip key={code} label={colorDescriptions[code.toString()]} color='green'>
+                  <ActionIcon
+                    className={`ansi-${code}-bg`}
+                    size="lg"
+                    onClick={() => applyFormatting(code)}
+                  >
+                    &nbsp;
+                  </ActionIcon>
+                </Tooltip>
+              ))}
+            </Flex>
 
-          <Text weight={500} mb="xs">BG Colors</Text>
-          <Flex gap={6} mb="md">
-            {[40, 41, 42, 43, 44, 45, 46, 47].map((code) => (
-              <Tooltip key={code} label={colorDescriptions[code.toString()]}>
-                <ActionIcon
-                  className={`ansi-${code}`}
-                  size="lg"
-                  onClick={() => applyFormatting(code)}
-                >
-                  &nbsp;
-                </ActionIcon>
-              </Tooltip>
-            ))}
-          </Flex>
-        </Box>
+            <Text weight={500} mb="xs">BG Colors</Text>
+            <Flex gap={6} mb="md">
+              {[40, 41, 42, 43, 44, 45, 46, 47].map((code) => (
+                <Tooltip key={code} label={colorDescriptions[code.toString()]} color='green'>
+                  <ActionIcon
+                    className={`ansi-${code}`}
+                    size="lg"
+                    onClick={() => applyFormatting(code)}
+                  >
+                    &nbsp;
+                  </ActionIcon>
+                </Tooltip>
+              ))}
+            </Flex>
+          </Box>
         </Flex>
 
         <Flex justify='center'>
-        <Stack spacing="md">
-          <Paper
-            withBorder
-            p="md"
-            style={{
-              backgroundColor: '#2F3136',
-              color: '#B9BBBE',
-              minHeight: '200px',
-              minWidth: '650px',
-            }}
-          >
-            <div
-              ref={textareaRef}
-              contentEditable
-              suppressContentEditableWarning
+          <Stack spacing="md">
+            <Paper
+              withBorder
+              p="md"
               style={{
-                fontFamily: 'monospace',
-                whiteSpace: 'pre-wrap',
-                fontSize: '0.875rem',
-                lineHeight: '1.125rem',
-                outline: 'none',
+                backgroundColor: '#2F3136',
+                color: '#B9BBBE',
+                minHeight: '200px',
+                minWidth: '650px',
               }}
-              dangerouslySetInnerHTML={{
-                __html: 'Welcome to <span class="ansi-33">Ashmit</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span> <span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span> Text Generator!'
-              }}
-            />
-          </Paper>
+            >
+              <div
+                ref={textareaRef}
+                contentEditable
+                suppressContentEditableWarning
+                style={{
+                  fontFamily: 'monospace',
+                  whiteSpace: 'pre-wrap',
+                  fontSize: '0.875rem',
+                  lineHeight: '1.125rem',
+                  outline: 'none',
+                }}
+              />
+            </Paper>
 
-          <Flex justify='center'>
-          <Group position="center">
-            <CopyButton value={generateFormattedText()} timeout={2000}>
-              {({ copied, copy }) => (
-                <Button
-                  variant={copied? 'filled' : 'default'}
-                  color={copied ? 'green' : ''}
-                  onClick={() => {
-                    copy();
-                    handleCopy();
-                  }}
-                  lefticon={
-                    copied ? (
-                      <IconCheck style={{ width: rem(16), height: rem(16) }} />
-                    ) : (
-                      <IconCopy style={{ width: rem(16), height: rem(16) }} />
-                    )
-                  }
-                >
-                  {copied ? copyStatus || 'Copied!' : 'Copy text as Discord formatted'}
-                </Button>
-              )}
-            </CopyButton>
-          </Group>
-          </Flex>
+            <Flex justify='center'>
+              <Group position="center">
+                <CopyButton value={generateFormattedText()} timeout={2000}>
+                  {({ copied, copy }) => (
+                    <Button
+                      variant={copied ? 'filled' : 'default'}
+                      color={copied ? 'green' : ''}
+                      onClick={() => {
+                        copy();
+                        handleCopy();
+                      }}
+                      lefticon={
+                        copied ? (
+                          <IconCheck style={{ width: rem(16), height: rem(16) }} />
+                        ) : (
+                          <IconCopy style={{ width: rem(16), height: rem(16) }} />
+                        )
+                      }
+                    >
+                      {copied ? copyStatus || 'Copied!' : 'Copy text as Discord formatted'}
+                    </Button>
+                  )}
+                </CopyButton>
+              </Group>
+            </Flex>
 
-          <Text size="sm" align="center">
-            This is an unofficial tool, it is not made or endorsed by Discord.
-          </Text>
-        </Stack>
+            <Text size="sm" align="center">
+              This is an unofficial tool, it is not made or endorsed by Discord.
+            </Text>
+          </Stack>
         </Flex>
       </Stack>
     </Container>
