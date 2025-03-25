@@ -12,7 +12,7 @@ const theme = createTheme({
 });
 
 export const metadata = {
-  title: 'Discord Colored Text Generator',
+  title: `Ashmit's Discord Colored Text Generator`,
   description: 'Generate colored text for Discord messages using ANSI codes',
 };
 
